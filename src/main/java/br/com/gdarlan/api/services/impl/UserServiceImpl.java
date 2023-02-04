@@ -1,6 +1,7 @@
 package br.com.gdarlan.api.services.impl;
 
 import br.com.gdarlan.api.domain.Users;
+import br.com.gdarlan.api.domain.dto.UserDto;
 import br.com.gdarlan.api.repositories.UserRepository;
 import br.com.gdarlan.api.services.UserService;
 import br.com.gdarlan.api.services.exceptions.ObjectNotFoundException;
@@ -29,5 +30,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Users> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public Users create(UserDto obj) {
+        return repository.save(mapper.map(obj,Users.class));
     }
 }
