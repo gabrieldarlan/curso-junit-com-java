@@ -1,4 +1,4 @@
-package br.com.gdarlan.api.resource;
+package br.com.gdarlan.api.resources;
 
 import br.com.gdarlan.api.domain.dto.UserDto;
 import br.com.gdarlan.api.services.UserService;

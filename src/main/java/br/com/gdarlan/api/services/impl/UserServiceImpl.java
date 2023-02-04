@@ -4,6 +4,7 @@ import br.com.gdarlan.api.domain.Users;
 import br.com.gdarlan.api.domain.dto.UserDto;
 import br.com.gdarlan.api.repositories.UserRepository;
 import br.com.gdarlan.api.services.UserService;
+import br.com.gdarlan.api.services.exceptions.DataIntegrityViolationException;
 import br.com.gdarlan.api.services.exceptions.ObjectNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Users create(UserDto obj) {
+        findByEmail(obj);
         return repository.save(mapper.map(obj,Users.class));
+    }
+
+    private void findByEmail(UserDto obj){
+        Optional<Users> user = repository.findByEmail(obj.getEmail());
+
+        if(user.isPresent()){
+            throw new DataIntegrityViolationException("E-mail já cadastrado no sistema.");
+        }
     }
 }

@@ -1,4 +1,4 @@
-package br.com.gdarlan.api.resource.exceptions;
+package br.com.gdarlan.api.resources.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
