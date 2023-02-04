@@ -3,6 +3,7 @@ package br.com.gdarlan.api.services.impl;
 import br.com.gdarlan.api.domain.Users;
 import br.com.gdarlan.api.domain.dto.UserDto;
 import br.com.gdarlan.api.repositories.UserRepository;
+import br.com.gdarlan.api.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -53,6 +54,18 @@ class UserServiceImplTest {
         assertEquals(NAME, response.getName());
         assertEquals(PASSWORD, response.getPassword());
         assertEquals(EMAIL, response.getEmail());
+    }
+
+    @Test
+    void whenFindByIdThenReturnObjectNotFoundException() {
+        when(repository.findById(anyInt()))
+                .thenThrow(new ObjectNotFoundException("Objeto não localizado."));
+        try {
+            service.findById(ID);
+        } catch (Exception ex) {
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals("Objeto não localizado.", ex.getMessage());
+        }
     }
 
     @Test
