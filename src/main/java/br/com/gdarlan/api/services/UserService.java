@@ -1,7 +1,7 @@
 package br.com.gdarlan.api.services;
 
-import br.com.gdarlan.api.domain.User;
+import br.com.gdarlan.api.domain.Users;
 
 public interface UserService {
-    User findById(Integer id);
+    Users findById(Integer id);
 }

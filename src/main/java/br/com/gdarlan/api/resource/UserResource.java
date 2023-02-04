@@ -1,6 +1,6 @@
 package br.com.gdarlan.api.resource;
 
-import br.com.gdarlan.api.domain.User;
+import br.com.gdarlan.api.domain.Users;
 import br.com.gdarlan.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class UserResource {
     private UserService service;
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@PathVariable Integer id){
+    public ResponseEntity<Users> findById(@PathVariable Integer id){
         return ResponseEntity.ok().body(service.findById(id));
     }
 }
