@@ -3,6 +3,7 @@ package br.com.gdarlan.api.services.impl;
 import br.com.gdarlan.api.domain.Users;
 import br.com.gdarlan.api.domain.dto.UserDto;
 import br.com.gdarlan.api.repositories.UserRepository;
+import br.com.gdarlan.api.services.exceptions.DataIntegrityViolationException;
 import br.com.gdarlan.api.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.when;
 
@@ -88,7 +91,32 @@ class UserServiceImplTest {
     }
 
     @Test
-    void create() {
+    void whenCreateThenReturnSuccess() {
+        when(repository.save(any())).thenReturn(users);
+
+        Users response = service.create(userDto);
+
+        assertNotNull(response);
+
+        assertEquals(Users.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(NAME, response.getName());
+        assertEquals(EMAIL, response.getEmail());
+        assertEquals(PASSWORD, response.getPassword());
+
+
+    }
+
+    @Test
+    void whenCreateThenReturnDataIntegrityViolationException() {
+        when(repository.findByEmail(anyString())).thenReturn(optionalUsers);
+        try {
+            optionalUsers.get().setId(2);
+            service.create(userDto);
+        } catch (Exception e) {
+            assertEquals(DataIntegrityViolationException.class, e.getClass());
+            assertEquals("E-mail já cadastrado no sistema.", e.getMessage());
+        }
     }
 
     @Test
